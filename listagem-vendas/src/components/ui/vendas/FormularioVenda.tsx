@@ -4,6 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Venda } from '@/types/index';
 import toast, { Toaster } from 'react-hot-toast';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft, Save } from "lucide-react";
 
 export default function FormularioVenda() {
   const router = useRouter();
@@ -48,7 +53,6 @@ export default function FormularioVenda() {
       
       console.log('Venda adicionada:', novaVenda);
       console.log('Total de vendas:', vendas.length);
-      console.log('Vendas no localStorage:', JSON.stringify(vendas));
 
       toast.success('Salvo com sucesso!');
       
@@ -64,59 +68,62 @@ export default function FormularioVenda() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-      <Toaster position="top-right" />
-      <h2 className="text-2xl font-bold mb-6">Nova Venda</h2>
-      
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-1">
-            Nome
-          </label>
-          <input
-            id="nome"
-            type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+    <div className="max-w-md mx-auto p-6">
+      <Card>
+        <CardHeader>
+        <Toaster position="top-right" />
+          <CardTitle className="text-2xl">Nova Venda</CardTitle>
+        </CardHeader>
         
-        <div className="mb-6">
-          <label htmlFor="valor" className="block text-sm font-medium text-gray-700 mb-1">
-            Valor
-          </label>
-          <input
-            id="valor"
-            type="number"
-            step="0.01"
-            min="0.01"
-            value={valor}
-            onChange={(e) => setValor(e.target.value)}
-            required
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        
-        <div className="flex justify-end space-x-2">
-          <button
-            type="button"
-            onClick={() => router.push('/')}
-            disabled={isSubmitting}
-            className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
-          >
-            {isSubmitting ? 'Salvando...' : 'Salvar'}
-          </button>
-        </div>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="nome">Nome</Label>
+              <Input
+                id="nome"
+                type="text"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                required
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="valor">Valor</Label>
+              <Input
+                id="valor"
+                type="number"
+                step="0.01"
+                min="0.01"
+                value={valor}
+                onChange={(e) => setValor(e.target.value)}
+                required
+              />
+            </div>
+          </CardContent>
+          
+          <CardFooter className="flex justify-between">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.push('/')}
+              disabled={isSubmitting}
+              className="flex items-center gap-1"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Voltar
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex items-center gap-1"
+            >
+              <Save className="h-4 w-4" />
+              {isSubmitting ? 'Salvando...' : 'Salvar'}
+            </Button>
+          </CardFooter>
+        </form>
+      </Card>
     </div>
   );
 }
